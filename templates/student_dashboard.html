@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-800 text-white p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold">Student Dashboard</h1>
+    <div class="space-x-4">
+      <a href="#academics" class="hover:underline">Academics</a>
+      <a href="#attendance" class="hover:underline">Attendance</a>
+      <a href="#notifications" class="hover:underline">Notifications</a>
+      <a href="{{ url_for('logout') }}" class="bg-red-600 px-3 py-1 rounded hover:bg-red-700">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="p-6 space-y-6">
+    <!-- Welcome Section -->
+    <section class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-2">Welcome, {{ session['user']['name'] }}!</h2>
+      <p class="text-gray-600">This is your personalized dashboard. Monitor your performance, attendance, and academic journey here.</p>
+    </section>
+
+    <!-- Academics Section -->
+    <section id="academics" class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Academic Performance</h2>
+      <div class="max-w-md mx-auto">
+        <canvas id="gradesChart" height="180"></canvas>
+      </div>
+    </section>
+
+    <!-- Attendance Section -->
+    <section id="attendance" class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Attendance Overview</h2>
+      <div id="attendanceLoader" class="flex justify-center items-center space-x-2 mb-4">
+        <svg class="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
+        </svg>
+        <span class="text-gray-600">Loading Attendance...</span>
+      </div>
+
+      <div id="attendanceContent" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-blue-100 p-4 rounded">
+          <h3 class="text-lg font-medium mb-2">Subjects</h3>
+          <ul class="list-disc list-inside text-gray-700" id="subjectsList">
+            <!-- Dynamic list will go here -->
+          </ul>
+        </div>
+        <div class="p-4 bg-gray-100 rounded">
+          <h3 class="text-lg font-medium mb-2">Total Attendance</h3>
+          <p id="totalAttendance" class="text-2xl font-bold text-green-600">--%</p>
+          <p class="text-gray-600">Keep up the good work!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notifications Section -->
+    <section id="notifications" class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Notifications</h2>
+      <ul class="space-y-4">
+        <li class="bg-blue-50 p-4 rounded-md shadow-sm">New grades posted for Physics.</li>
+        <li class="bg-blue-50 p-4 rounded-md shadow-sm">Upcoming exam for Chemistry on 15th May.</li>
+        <li class="bg-blue-50 p-4 rounded-md shadow-sm">Updated attendance policy for this semester.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Chart.js Script -->
+  <script>
+    // Simulate fetching data
+    setTimeout(() => {
+      // Data for subjects and attendance
+      const subjects = ['Math', 'Physics', 'Chemistry', 'English'];
+      const attendance = [90, 85, 80, 95];
+      const totalAttendance = (attendance.reduce((a, b) => a + b, 0) / attendance.length).toFixed(2);
+
+      // Update Attendance Section
+      document.getElementById('attendanceLoader').classList.add('hidden');
+      document.getElementById('attendanceContent').classList.remove('hidden');
+      document.getElementById('subjectsList').innerHTML = subjects.map((subject, index) => `<li>${subject}: ${attendance[index]}%</li>`).join('');
+      document.getElementById('totalAttendance').textContent = `${totalAttendance}%`;
+
+      // Academic Performance Chart (Grades Over Time)
+      const ctx = document.getElementById('gradesChart').getContext('2d');
+      const gradesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: subjects,
+          datasets: [{
+            label: 'Grades (%)',
+            data: [85, 78, 88, 92],
+            backgroundColor: ['#3b82f6', '#6366f1', '#10b981', '#f59e0b'],
+            hoverBackgroundColor: '#4b9eff',
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }, 2000); // Simulate a 2-second delay for data fetching
+  </script>
+</body>
+</html>

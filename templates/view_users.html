@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Users</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-8">
+        <h2 class="text-3xl font-bold mb-6">View All Users</h2>
+
+        <!-- User List -->
+        <div class="space-y-6 mb-6">
+            <ul class="list-disc pl-6 text-gray-700">
+                {% for user in users %}
+                    <li>{{ user.name }} - {{ user.email }} - Role: {{ user.role }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

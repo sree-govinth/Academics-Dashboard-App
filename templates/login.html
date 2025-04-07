@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Campus App - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-lg rounded-2xl w-full max-w-md p-8">
+        <div class="flex justify-between border-b pb-4 mb-6">
+            <span class="text-blue-600 font-semibold border-b-2 border-blue-600">Login</span>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-1">Welcome Back</h2>
+        <p class="text-sm text-gray-500 mb-6">Login with your campus credentials</p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="text-red-500 mb-4">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="space-y-4">
+            <input name="email" type="email" placeholder="Email" class="w-full p-3 border rounded-lg bg-blue-50" required>
+            <input name="password" type="password" placeholder="Password" class="w-full p-3 border rounded-lg bg-blue-50" required>
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Login</button>
+        </form>
+
+        <!-- Show this only if no user exists yet (first-time setup) -->
+        {% if show_signup_link %}
+        <p class="text-sm text-gray-500 text-center mt-4">
+            First time here? <a href="{{ url_for('signup') }}" class="text-blue-600 hover:underline">Register as Admin</a>
+        </p>
+        {% endif %}
+    </div>
+</body>
+</html>

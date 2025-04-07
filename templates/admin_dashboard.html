@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-8 space-y-8">
+        
+        <!-- Header Section -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold mb-4 text-blue-600">Admin Dashboard</h2>
+            <p class="text-lg text-gray-600">Welcome to the admin portal. Manage users, view dashboards, and monitor activities here.</p>
+        </div>
+
+        <!-- Logout Button -->
+        <div class="flex justify-end mb-6">
+            <a href="{{ url_for('logout') }}">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+                    🚪 Logout
+                </button>
+            </a>
+        </div>
+
+        <!-- Admin Features Section -->
+        <div class="space-y-6 mb-6">
+            <h3 class="text-xl font-semibold text-gray-800">Manage Users</h3>
+            <div class="space-x-4">
+                <a href="{{ url_for('signup') }}">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+                        ➕ Add New User
+                    </button>
+                </a>
+                <a href="{{ url_for('view_users') }}">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        📋 View All Users
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Search Users Section -->
+        <div class="space-y-6 mb-6">
+            <form action="{{ url_for('view_users') }}" method="GET" class="flex items-center space-x-4">
+                <input type="text" name="search" placeholder="Search by name or email" class="p-3 border rounded-lg w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">Search</button>
+            </form>
+        </div>
+
+        <!-- View Dashboards Section -->
+        <div class="space-y-6 mb-6">
+            <h3 class="text-xl font-semibold text-gray-800">View Dashboards</h3>
+            <div class="space-x-4 flex flex-wrap">
+                <a href="{{ url_for('student_dashboard') }}">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition mb-4">
+                        🎓 View Student Dashboard
+                    </button>
+                </a>
+                <a href="{{ url_for('faculty_dashboard') }}">
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition mb-4">
+                        🧑‍🏫 View Faculty Dashboard
+                    </button>
+                </a>
+                <a href="{{ url_for('staff_dashboard') }}">
+                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition mb-4">
+                        👨‍💼 View Staff Dashboard
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent User Activity -->
+        <div class="space-y-6">
+            <h3 class="text-xl font-semibold text-gray-800">Recent User Activity</h3>
+            <ul class="list-disc pl-6 text-gray-700">
+                {% for activity in activities %}
+                    <li>{{ activity.user_name }} ({{ activity.role }}) - {{ activity.action }} at {{ activity.timestamp }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>
