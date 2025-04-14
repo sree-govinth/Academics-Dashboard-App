@@ -29,7 +29,7 @@ jobs:
           python -m unittest discover -s . -p "test_*.py"
 
       - name: 🐳 Build Docker Image
-        run: docker build -t your-dockerhub-username/flask-dashboard-app:latest .
+        run: docker build -t sreegovinth/uni-dashboard:latest .
 
       - name: 🔐 Log in to DockerHub
         env:
@@ -38,11 +38,11 @@ jobs:
         run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
       - name: 🚀 Push Docker Image
-        run: docker push your-dockerhub-username/flask-dashboard-app:latest
+        run: docker push sreegovinth/uni-dashboard:latest
 
       - name: 🔬 System Test - App Response
         run: |
-          docker run -d -p 5000:5000 --name flask-test your-dockerhub-username/flask-dashboard-app:latest
+          docker run -d -p 5000:5000 --name flask-test sreegovinth/uni-dashboard:latest
           sleep 5  # Wait for container to boot up
           curl --fail http://localhost:5000 || (echo "System test failed" && exit 1)
           docker stop flask-test
