@@ -2,6 +2,10 @@ import unittest
 from app import app
 
 class TestSignup(unittest.TestCase):
+    def login_as_admin(self):
+        with self.client.session_transaction() as sess:
+            sess['user'] = {'username': 'adminuser', 'role': 'admin'}
+
     def setUp(self):
         app.config['TESTING'] = True
         app.secret_key = 'test_key'
