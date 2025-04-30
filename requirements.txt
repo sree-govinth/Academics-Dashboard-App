@@ -1,8 +1,9 @@
-flask
-flask-login
-flask-socketio
+Flask
 pymongo
 python-dotenv
+sentence-transformers
+torch
 pytz
 werkzeug
-sentence_transformers
+gunicorn
+unittest2

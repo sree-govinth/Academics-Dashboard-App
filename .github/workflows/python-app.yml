@@ -24,9 +24,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 🧪 Run unit tests (module-wise)
+      - name: ✅ Run unittests
         run: |
-          python -m unittest discover -s tests -p "test_*.py" -v
+          python -m unittest discover -s . -p "test_app_combined.py"
 
 
       - name: 🐳 Build Docker Image

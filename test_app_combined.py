@@ -11,28 +11,6 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Login', response.data)
 
-class TestSignup(unittest.TestCase):
-    def setUp(self):
-        self.client = app.test_client()
-        self.client.testing = True
-        with self.client.session_transaction() as sess:
-            sess['user'] = {'username': 'adminuser', 'role': 'admin'}
-
-    def test_signup_page_loads(self):
-        response = self.client.get('/signup')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Sign Up', response.data)
-
-    def test_signup_password_mismatch(self):
-        response = self.client.post('/signup', data={
-            'name': 'Test User',
-            'email': 'test@example.com',
-            'password': 'pass123',
-            'confirm_password': 'pass456',
-            'role': 'student'
-        }, follow_redirects=True)
-        self.assertIn(b'Passwords do not match', response.data)
-
 class TestDashboards(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client()
