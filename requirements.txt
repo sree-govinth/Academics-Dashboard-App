@@ -5,4 +5,4 @@ pymongo
 python-dotenv
 pytz
 werkzeug
-sentence_transformer
+sentence_transformers
