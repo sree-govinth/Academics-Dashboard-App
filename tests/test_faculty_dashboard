@@ -1,0 +1,30 @@
+import unittest
+from app import app
+
+class TestFacultyDashboard(unittest.TestCase):
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.secret_key = 'test_key'
+        self.client = app.test_client()
+
+    def login_as_faculty(self):
+        with self.client.session_transaction() as sess:
+            sess['user'] = {'username': 'facultyuser', 'role': 'faculty'}
+
+    def login_as_admin(self):
+        with self.client.session_transaction() as sess:
+            sess['user'] = {'username': 'adminuser', 'role': 'admin'}
+
+    def test_faculty_access(self):
+        self.login_as_faculty()
+        response = self.client.get('/faculty_dashboard')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Faculty Dashboard', response.data)
+
+    def test_faculty_restriction_for_non_faculty(self):
+        self.login_as_admin()
+        response = self.client.get('/faculty_dashboard', follow_redirects=True)
+        self.assertIn(b'Unauthorized access', response.data)
+
+if __name__ == '__main__':
+    unittest.main()
