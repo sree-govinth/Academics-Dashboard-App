@@ -11,6 +11,14 @@ import json
 # Load environment variables
 load_dotenv()
 
+TESTING = os.getenv("TESTING", "False") == "True"
+
+if TESTING:
+    import mongomock
+    client = mongomock.MongoClient()
+else:
+    client = MongoClient(os.getenv("MONGO_URI"))
+
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'your_secret_key')
 app.permanent_session_lifetime = timedelta(minutes=30)
